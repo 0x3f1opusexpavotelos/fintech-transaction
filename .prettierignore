@@ -1,0 +1,17 @@
+*.md
+!CHANGELOG.md
+!LICENSE.md
+
+dist/
+template/
+temp/
+
+*.log
+!debug.log
+*.temp
+*.tmp
+*.cache
+
+pnpm-workspace.yaml
+pnpm-lock.yaml
+bun.lock

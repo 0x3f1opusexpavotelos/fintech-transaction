@@ -1,0 +1,178 @@
+{
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.preferences.importModuleSpecifier": "non-relative",
+  "vue.server.includeLanguages": ["vue", "markdown"],
+
+  "[markdown][yaml][json]": {
+    // "editor.fontFamily": "Input Mono, monospace",
+    "editor.renderWhitespace": "all"
+  },
+  // layout
+  "workbench.sideBar.location": "right",
+  "explorer.sortOrder": "type",
+
+  "files.trimTrailingWhitespace": true,
+  "markdown.preview.scrollEditorWithPreview": true,
+  "markdown.preview.scrollPreviewWithEditor": true,
+
+  "debug.toolBarLocation": "docked",
+  "editor.cursorBlinking": "phase",
+  "editor.cursorSmoothCaretAnimation": "on",
+  "editor.cursorStyle": "line",
+  // -----------------------------------------------------------------------------
+  // IntelliSense: auto-suggestion and completion
+  // -----------------------------------------------------------------
+  "editor.acceptSuggestionOnEnter": "off",
+  "editor.tabCompletion": "on",
+  "editor.snippetSuggestions": "top",
+
+  // ========== Visuals ==========
+  "editor.guides.bracketPairs": "active",
+  "editor.lineNumbers": "interval",
+  "editor.renderWhitespace": "boundary",
+  "workbench.editor.tabActionLocation": "left",
+  "workbench.list.smoothScrolling": true,
+  "workbench.startupEditor": "newUntitledFile",
+  // ========== Font Family ==========
+  // "editor.fontFamily": "ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;", // github primer choice
+  "editor.fontFamily": "Cascadia Code, Consolas,'Monasapce Argon','Fira Code', monospace",
+  "editor.fontWeight": "500",
+  "editor.fontLigatures": false,
+  "terminal.integrated.fontFamily": "FiraCode Nerd Font ",
+  "terminal.integrated.fontLigatures": true,
+  "workbench.tree.expandMode": "singleClick",
+  "workbench.tree.indent": 10,
+  "workbench.fontAliasing": "antialiased",
+
+  // ========== Theme ==========
+  "workbench.iconTheme": "catppuccin-mocha",
+  "workbench.productIconTheme": "icons-carbon",
+  "workbench.preferredDarkColorTheme": "Vitesse Dark",
+  "workbench.preferredLightColorTheme": "Vitesse Light",
+  "window.autoDetectColorScheme": true,
+  "workbench.colorTheme": "Vitesse Dark",
+  "editor.tokenColorCustomizations": {
+    "textMateRules": [
+      {
+        "scope": ["markup.heading", "markup.heading entity.name"],
+        "settings": {
+          "fontStyle": "bold",
+          "foreground": "#4d9375"
+        }
+      },
+      {
+        "scope": [
+          "keyword.operator.quantifier.regexp",
+          "constant.numeric",
+          "number"
+        ],
+        "settings": {
+          "foreground": "#4C9A91"
+        }
+      },
+
+      {
+        "scope": ["entity.name.tag", "tag.html"],
+        "settings": {
+          "foreground": "#4d9375"
+        }
+      }
+    ]
+  },
+  // "workbench.colorCustomizations": {},
+
+  // ========== Editor ==========
+  "files.autoSave": "onFocusChange",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "never",
+    "source.fixAll.eslint": "explicit",
+    // `onFocusChange` or  explicitly saved
+    "source.fixAll.stylelint": "always",
+    "source.organizeImports": "never"
+  },
+  "[typescript][typescriptreact][jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSaveMode": "modifications"
+  },
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
+
+  "tailwindCSS.experimental.classRegex": [
+    ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
+    ["Variants \\=([^;]*);", "\"([^\"]*)\""]
+  ],
+  "tailwindCSS.classAttributes": [
+    "class",
+    "className",
+    ".*Styles.*" // Add ".*Styles.*" (or whatever matches your naming scheme)
+  ],
+  "tailwindCSS.emmetCompletions": true,
+  "editor.quickSuggestions": {
+    "strings": true
+  },
+  "files.exclude": {
+    "**/.git": false,
+    "**/.next": false,
+    "**/.nuxt": false
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/.git": true
+  },
+  "editor.inlineSuggest.enabled": true,
+  "editor.multiCursorModifier": "ctrlCmd",
+  "editor.suggestSelection": "first",
+  "editor.stickyScroll.enabled": true,
+  "editor.hover.sticky": true,
+  "prettier.enable": true,
+  "prettier.printWidth": 200,
+  "prettier.semi": false,
+  "prettier.singleQuote": false,
+  "explorer.confirmDelete": false,
+  "explorer.confirmDragAndDrop": false,
+  "files.eol": "\n",
+  "files.insertFinalNewline": true,
+  "git.enableSmartCommit": true,
+  "terminal.integrated.cursorBlinking": true,
+  "terminal.integrated.cursorStyle": "line",
+  "terminal.integrated.fontWeight": "300",
+  "workbench.editor.closeOnFileDelete": true,
+  "workbench.editor.highlightModifiedTabs": true,
+  "errorLens.enabledDiagnosticLevels": ["warning", "error"],
+  "errorLens.excludeBySource": ["cSpell", "Grammarly", "eslint"],
+
+  // ESLint config: https://github.com/antfu/eslint-config
+  "eslint.codeAction.showDocumentation": {
+    "enable": true
+  },
+  "eslint.quiet": true,
+  // Silent the stylistic rules in you IDE, but still auto fix them
+  "eslint.rules.customizations": [
+    { "rule": "style/*", "severity": "off" },
+    { "rule": "format/*", "severity": "off" },
+    { "rule": "*-indent", "severity": "off" },
+    { "rule": "*-spacing", "severity": "off" },
+    { "rule": "*-spaces", "severity": "off" },
+    { "rule": "*-order", "severity": "off" },
+    { "rule": "*-dangle", "severity": "off" },
+    { "rule": "*-newline", "severity": "off" },
+    { "rule": "*quotes", "severity": "off" },
+    { "rule": "*semi", "severity": "off" }
+  ],
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "vue",
+    "html",
+    "markdown",
+    "json",
+    "jsonc",
+    "yaml",
+    "toml"
+  ],
+  "cSpell.words": ["Cardcontent"]
+}
