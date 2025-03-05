@@ -1,33 +1,33 @@
-import { z } from "zod";
-import { Trash } from "lucide-react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod"
+import { Trash } from "lucide-react"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
 
-import { accountInsertSchema } from "@/db/schema";
+import { insertAccountSchema } from "@/db/schema"
 
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,
   FormField,
   FormLabel,
   FormItem
-} from "@/components/ui/form";
+} from "@/components/ui/form"
 
-const formSchema = accountInsertSchema.pick({
+const formSchema = insertAccountSchema.pick({
   name: true
-});
+})
 
-type FormValues = z.input<typeof formSchema>;
+type FormValues = z.input<typeof formSchema>
 
 type Props = {
-  id?: string;
-  defaultValues?: FormValues;
-  onSubmit: (values: FormValues) => void;
-  onDelete?: () => void;
-  disabled?: boolean;
-};
+  id?: string
+  defaultValues?: FormValues
+  onSubmit: (values: FormValues) => void
+  onDelete?: () => void
+  disabled?: boolean
+}
 
 export const AccountForm = ({
   id,
@@ -39,14 +39,14 @@ export const AccountForm = ({
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: defaultValues
-  });
+  })
 
   const handleSubmit = (values: FormValues) => {
-    onSubmit(values);
-  };
+    onSubmit(values)
+  }
   const handleDelete = () => {
-    onDelete?.();
-  };
+    onDelete?.()
+  }
 
   return (
     <Form {...form}>
@@ -86,5 +86,5 @@ export const AccountForm = ({
         )}
       </form>
     </Form>
-  );
-};
+  )
+}

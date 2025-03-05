@@ -1,17 +1,18 @@
-import { useMemo } from "react";
+"use client"
+import { useMemo } from "react"
 
-import { SingleValue } from "react-select";
+import { SingleValue } from "react-select"
 
-import CreatableSelect from "react-select/creatable";
+import CreatableSelect from "react-select/creatable"
 
 type Props = {
-  onChange: (value?: string) => void;
-  onCreate?: (value: string) => void;
-  options?: { label: string; value: string }[];
-  value?: string | null | undefined;
-  disabled?: boolean;
-  placeholder?: string;
-};
+  onChange: (value?: string) => void
+  onCreate?: (value: string) => void
+  options?: { label: string; value: string }[]
+  value?: string | null | undefined
+  disabled?: boolean
+  placeholder?: string
+}
 
 export const Select = ({
   value,
@@ -22,12 +23,12 @@ export const Select = ({
   placeholder
 }: Props) => {
   const onSelect = (option: SingleValue<{ label: string; value: string }>) => {
-    onChange(option?.value);
-  };
+    onChange(option?.value)
+  }
 
   const formattedValue = useMemo(() => {
-    return options.find((option) => option.value === value);
-  }, [options, value]);
+    return options.find((option) => option.value === value)
+  }, [options, value])
 
   return (
     <CreatableSelect
@@ -48,5 +49,5 @@ export const Select = ({
       onCreateOption={onCreate}
       isDisabled={disabled}
     />
-  );
-};
+  )
+}

@@ -1,35 +1,30 @@
-import { Hono } from "hono";
-import { handle } from "hono/vercel";
-import { HTTPException } from "hono/http-exception";
-import { zValidator } from "@hono/zod-validator";
-import { z } from "zod";
+import { Hono } from "hono"
+import { handle } from "hono/vercel"
+import { HTTPException } from "hono/http-exception"
 
-import accounts from "./accounts";
+import accounts from "./accounts"
+import transactions from "./transactions"
+import categories from "./categories"
 
-const app = new Hono().basePath("/api");
+const app = new Hono().basePath("/api")
 
 app.onError((err, c) => {
   if (err instanceof HTTPException) {
-    return err.getResponse();
+    return err.getResponse()
   }
-  return c.json({ error: "unHandledError" }, 500);
-});
+  console.log(err)
+  return c.json({ error: "unHandledError" }, 500)
+})
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const routes = app.route("/accounts", accounts).get(
-  "/assets",
-  zValidator(
-    "param",
-    z.object({
-      name: z.string()
-    })
-  ),
-  async () => {}
-);
+const routes = app
+  .route("/accounts", accounts)
+  .route("/categories", categories)
+  .route("/transactions", transactions)
 
-export const GET = handle(app);
-export const POST = handle(app);
-export const PATCH = handle(app);
-export const DELETE = handle(app);
+export const GET = handle(app)
+export const POST = handle(app)
+export const PATCH = handle(app)
+export const DELETE = handle(app)
 
-export type AppType = typeof routes;
+export type AppType = typeof routes

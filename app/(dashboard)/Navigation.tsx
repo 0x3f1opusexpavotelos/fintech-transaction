@@ -1,12 +1,12 @@
-"use client";
-import { usePathname, useRouter } from "next/navigation";
-import { NavButton } from "./NavButton";
-import { useMedia } from "react-use";
-import { useState } from "react";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Button } from "@/components/ui/button";
-import { Menu } from "lucide-react";
-import { cn } from "@/lib/utils";
+"use client"
+import { usePathname, useRouter } from "next/navigation"
+import { NavButton } from "./NavButton"
+import { useMedia } from "react-use"
+import { useState } from "react"
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { Button } from "@/components/ui/button"
+import { Menu } from "lucide-react"
+import { cn } from "@/lib/utils"
 const routes = [
   {
     label: "Overview",
@@ -14,10 +14,10 @@ const routes = [
   },
   {
     label: "Transactions",
-    href: "/trnasactions"
+    href: "/transactions"
   },
   {
-    label: "Acccounts",
+    label: "Accounts",
     href: "/accounts"
   },
   {
@@ -28,24 +28,24 @@ const routes = [
     label: "Settings",
     href: "/settings"
   }
-];
+]
 
 export const Navigation = () => {
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const isMobile = useMedia("(max-width: 1024px)", false);
-  console.log(isMobile);
-  const router = useRouter();
-  const pathName = usePathname();
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+  const isMobile = useMedia("(max-width: 1024px)", false)
+  console.log(isMobile)
+  const router = useRouter()
+  const pathName = usePathname()
 
   const onClick = (href: string) => {
-    router.push(href);
-    setIsDrawerOpen(false);
-  };
+    router.push(href)
+    setIsDrawerOpen(false)
+  }
 
   if (isMobile) {
     return (
       <Sheet open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
-        <SheetTrigger>
+        <SheetTrigger asChild>
           <Button
             variant="outline"
             size="sm"
@@ -72,7 +72,7 @@ export const Navigation = () => {
           </nav>
         </SheetContent>
       </Sheet>
-    );
+    )
   }
 
   return (
@@ -86,5 +86,5 @@ export const Navigation = () => {
         ></NavButton>
       ))}
     </nav>
-  );
-};
+  )
+}

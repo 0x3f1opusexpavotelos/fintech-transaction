@@ -43,3 +43,28 @@ bun add --dev eslint typescript-eslint @typescript-eslint/eslint-plugin @typescr
 bunx husky init
 bun --eval "fs.writeFileSync('.husky/pre-commit','bunx lint-staged\n')"
 ```
+
+
+
+## Features
+
+
+each features are co-location for maintainability, layer of abstraction and Sensibility
+
+- features
+  - `/api`: query client
+  - `/components`: query UI
+  - `/hooks`: state hooks
+
+account management
+transaction History management
+
+transaction history management
+query,filter,add or edit transaction
+
+
+
+dashboard.overview
+subscription and paywall
+
+

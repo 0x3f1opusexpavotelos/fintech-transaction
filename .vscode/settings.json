@@ -42,43 +42,18 @@
   "terminal.integrated.fontLigatures": true,
   "workbench.tree.expandMode": "singleClick",
   "workbench.tree.indent": 10,
-  "workbench.fontAliasing": "antialiased",
+  // "workbench.fontAliasing": "antialiased",
 
   // ========== Theme ==========
   "workbench.iconTheme": "catppuccin-mocha",
   "workbench.productIconTheme": "icons-carbon",
-  "workbench.preferredDarkColorTheme": "Vitesse Dark",
+  "workbench.preferredDarkColorTheme": "Vitesse Dark Soft",
   "workbench.preferredLightColorTheme": "Vitesse Light",
   "window.autoDetectColorScheme": true,
   "workbench.colorTheme": "Vitesse Dark",
-  "editor.tokenColorCustomizations": {
-    "textMateRules": [
-      {
-        "scope": ["markup.heading", "markup.heading entity.name"],
-        "settings": {
-          "fontStyle": "bold",
-          "foreground": "#4d9375"
-        }
-      },
-      {
-        "scope": [
-          "keyword.operator.quantifier.regexp",
-          "constant.numeric",
-          "number"
-        ],
-        "settings": {
-          "foreground": "#4C9A91"
-        }
-      },
-
-      {
-        "scope": ["entity.name.tag", "tag.html"],
-        "settings": {
-          "foreground": "#4d9375"
-        }
-      }
-    ]
-  },
+  // "editor.tokenColorCustomizations": {
+  // "textMateRules": []
+  // },
   // "workbench.colorCustomizations": {},
 
   // ========== Editor ==========
@@ -140,7 +115,7 @@
   "terminal.integrated.fontWeight": "300",
   "workbench.editor.closeOnFileDelete": true,
   "workbench.editor.highlightModifiedTabs": true,
-  "errorLens.enabledDiagnosticLevels": ["warning", "error"],
+  "errorLens.enabledDiagnosticLevels": ["warning", "error", "hint", "info"],
   "errorLens.excludeBySource": ["cSpell", "Grammarly", "eslint"],
 
   // ESLint config: https://github.com/antfu/eslint-config
