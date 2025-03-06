@@ -161,3 +161,88 @@ z.mergei
 parse dateStr to Date object,
 or format Date object to dateStr.
 ISO 8601格式是“YYYY-MM-DDTHH:mm:ss”
+
+
+
+[query-string](https://www.npmjs.com/package/query-string) - power parsing  and stringify API feature  and clarify documented
+
+
+
+## Drizzle-ORM
+
+
+```bash
+# file runner
+bun app/index.ts
+# script runner
+bun db:generate #  script ->  "db:generate": "drizzle-kit generate --config drizzle.config.ts",
+#  equivalent package executable runner
+bunx drizzle-kit generate --config drizzle.config.ts
+```
+
+
+`drizzle-rom`
+
+`drizzle-kit generate`
+
+`drizzle-kit migrate`
+
+`drizzle-kit studio`
+
+
+
+`drizzle-kit seed`
+
+it ensures that the data you generate is consistent and reproducible across different runs.
+
+weighted random distribution
+
+
+refinee with range
+
+`count`: number of rows to insert
+
+`with`
+
+`columns`
+```ts
+await seed(db,schema).refine((f) => ({
+  users: {
+    count:5,
+    // refien between range
+    columns: {
+        id: f.int({
+          minValue: 1000,
+          maxValue: 2000,
+          isUnique: true
+        })
+    }
+  },
+  posts: {
+    count: 100,
+      // refine to retrive value from self-provided array
+    columns: {
+      description: f.valueFromArrary({
+        values: [
+
+        ]
+      })
+    }
+  }.
+   phoneNumber: funcs.phoneNumber({
+        template: "+(380) ###-####",
+         prefixes: ["+380 99", "+380 67"],
+         generatedDigitsNumbers: 7,
+        arraySize: 3
+      }),
+}))
+
+
+```
+
+
+data analyst
+
+business intelligence/analyst
+
+

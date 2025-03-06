@@ -57,6 +57,7 @@
   // "workbench.colorCustomizations": {},
 
   // ========== Editor ==========
+  // "editor.wordWrap": "bounded",
   "files.autoSave": "onFocusChange",
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
