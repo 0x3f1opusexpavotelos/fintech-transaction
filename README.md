@@ -246,3 +246,11 @@ data analyst
 business intelligence/analyst
 
 
+## type safe UI compoennt
+
+[cva](https://cva.style/docs/getting-started/installation)
+```ts
+npm i cva@npm:class-variance-authority
+import { cva } from "cva";
+```
+

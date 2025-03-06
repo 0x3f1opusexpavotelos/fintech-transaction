@@ -76,8 +76,9 @@
   },
 
   "tailwindCSS.experimental.classRegex": [
-    ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
-    ["Variants \\=([^;]*);", "\"([^\"]*)\""]
+    // ["Variants \\=([^;]*);", "\"([^\"]*)\""],
+    ["cva\\(((?:[^()]|\\([^()]*\\))*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
+    ["cx\\(((?:[^()]|\\([^()]*\\))*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
   ],
   "tailwindCSS.classAttributes": [
     "class",
@@ -94,7 +95,7 @@
     "**/.nuxt": false
   },
   "search.exclude": {
-    "**/node_modules": true,
+    // "**/node_modules": true,
     "**/.git": true
   },
   "editor.inlineSuggest.enabled": true,

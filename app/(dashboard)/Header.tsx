@@ -1,8 +1,9 @@
-import { Loader2 } from "lucide-react";
-import HeaderLogo from "./HeaderLogo";
-import { Navigation } from "./Navigation";
-import { UserButton, ClerkLoaded, ClerkLoading } from "@clerk/nextjs";
-import { WelcomeMessage } from "./WelcomeMessage";
+import { Loader2 } from "lucide-react"
+import HeaderLogo from "./HeaderLogo"
+import { Navigation } from "./Navigation"
+import { UserButton, ClerkLoaded, ClerkLoading } from "@clerk/nextjs"
+import { WelcomeMessage } from "./WelcomeMessage"
+import { Filters } from "@/components/filters"
 const Header = () => {
   return (
     <header className="bg-gradient-to-b from-blue-700 to-bule-500 px-4 py-8 pb-36">
@@ -20,9 +21,10 @@ const Header = () => {
           </ClerkLoading>
         </div>
         <WelcomeMessage />
+        <Filters />
       </div>
     </header>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header

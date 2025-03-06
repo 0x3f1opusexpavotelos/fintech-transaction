@@ -1,5 +1,5 @@
 import { clsx, type ClassValue } from "clsx"
-import { eachDayOfInterval, isSameDay } from "date-fns"
+import { eachDayOfInterval, isSameDay, subDays, format } from "date-fns"
 import { twMerge } from "tailwind-merge"
 
 export function cn(...inputs: ClassValue[]) {
@@ -57,6 +57,41 @@ export function caclPercentChange(current: number, previous: number) {
     return previous === current ? 0 : 100
   }
   return ((current - previous) / previous) * 100
+}
+
+type Period = {
+  from: string | Date
+  to: string | Date
+}
+
+export function formatDateRange(period: Period) {
+  const defaultTo = new Date()
+  const defaultFrom = subDays(defaultTo, 30)
+
+  if (!period.from) {
+    return `${format(defaultFrom, "LLL dd")} - ${format(defaultTo, "LLL dd,y")}`
+  }
+  if (period.to) {
+    return `${format(period.from, "LLL dd")} - ${format(defaultTo, "LLL dd,y")}`
+  }
+
+  return format(period.from, "LLL dd, y")
+}
+
+export function formatPercentage(
+  value: number,
+  optons: { addPrefix?: boolean } = {
+    addPrefix: false
+  }
+) {
+  const result = new Intl.NumberFormat("en-US", {
+    style: "percent"
+  }).format(value / 100)
+
+  if (optons.addPrefix && value > 0) {
+    return `+${result}`
+  }
+  return result
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

@@ -1,25 +1,25 @@
-"use client";
+"use client"
 
-import { columns } from "@/app/(dashboard)/accounts/columns";
-import { DataTable } from "@/components/data-table";
+import { columns } from "@/app/(dashboard)/accounts/columns"
+import { DataTable } from "@/components/data-table"
 
-import { useGetAccounts } from "@/features/accounts/api/use-get-accounts";
-import { useNewAccount } from "@/features/accounts/hooks/use-new-account";
-import { useBulkDeleteAccounts } from "@/features/accounts/api/use-bulk-delete-accounts";
+import { useGetAccounts } from "@/features/accounts/api/use-get-accounts"
+import { useNewAccount } from "@/features/accounts/hooks/use-new-account"
+import { useBulkDeleteAccounts } from "@/features/accounts/api/use-bulk-delete-accounts"
 
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Loader2, Plus } from "lucide-react";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Loader2, Plus } from "lucide-react"
+import { Skeleton } from "@/components/ui/skeleton"
 // import { Skeleton } from "@/components/ui/skeleton";
 
-export const AccountPage = () => {
-  const accountQuery = useGetAccounts();
-  const newAccount = useNewAccount();
-  const deleAccounts = useBulkDeleteAccounts();
-  const accounts = accountQuery.data || [];
+const AccountPage = () => {
+  const accountQuery = useGetAccounts()
+  const newAccount = useNewAccount()
+  const deleAccounts = useBulkDeleteAccounts()
+  const accounts = accountQuery.data || []
 
-  const isDisabled = accountQuery.isLoading || deleAccounts.isPending;
+  const isDisabled = accountQuery.isLoading || deleAccounts.isPending
 
   if (accountQuery.isLoading) {
     return (
@@ -33,7 +33,7 @@ export const AccountPage = () => {
           </div>
         </CardContent>
       </Card>
-    );
+    )
   }
 
   return (
@@ -52,15 +52,15 @@ export const AccountPage = () => {
             filterKey="name"
             data={accounts}
             onDelete={(rows) => {
-              const ids = rows.map((r) => r.original.id);
-              deleAccounts.mutate({ ids });
+              const ids = rows.map((r) => r.original.id)
+              deleAccounts.mutate({ ids })
             }}
             disabled={isDisabled}
           />
         </CardContent>
       </Card>
     </div>
-  );
-};
+  )
+}
 
-export default AccountPage;
+export default AccountPage
