@@ -1,0 +1,4 @@
+[build]
+publish = ".next/build"
+command = "bun run build"
+ignore = ""
