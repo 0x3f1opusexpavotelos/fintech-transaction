@@ -99,7 +99,7 @@ const app = new Hono()
           id: transactions.id,
           date: transactions.date,
           categoryId: transactions.categoryId,
-          payee: transactions.categoryId,
+          payee: transactions.payee,
           amount: transactions.amount,
           notes: transactions.notes,
           accountId: transactions.accountId

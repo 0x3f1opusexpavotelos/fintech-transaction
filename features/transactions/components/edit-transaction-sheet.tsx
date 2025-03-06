@@ -105,7 +105,7 @@ export const EditTransactionSheet = () => {
         date: transactionQuery.data.date
           ? new Date(transactionQuery.data.date)
           : new Date(),
-        payee: transactionQuery.data.payee || "",
+        payee: transactionQuery.data.payee?.toString() || "",
         notes: transactionQuery.data.notes
       }
     : {

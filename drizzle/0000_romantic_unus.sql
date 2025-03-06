@@ -1,3 +1,10 @@
+CREATE TABLE "accounts" (
+	"id" text PRIMARY KEY NOT NULL,
+	"name" varchar(256) NOT NULL,
+	"user_id" text NOT NULL,
+	"layid_id" text
+);
+--> statement-breakpoint
 CREATE TABLE "categories" (
 	"id" text PRIMARY KEY NOT NULL,
 	"plaid_id" text,
@@ -9,7 +16,8 @@ CREATE TABLE "transactions" (
 	"id" text PRIMARY KEY NOT NULL,
 	"amount" integer NOT NULL,
 	"payee" text NOT NULL,
-	"data" timestamp NOT NULL,
+	"date" timestamp NOT NULL,
+	"notes" text,
 	"account_id" text NOT NULL,
 	"category_id" text
 );

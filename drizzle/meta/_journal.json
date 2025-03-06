@@ -5,29 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1740833668569,
-      "tag": "0000_great_blob",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1740834282917,
-      "tag": "0001_left_manta",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1741079766209,
-      "tag": "0002_green_mongu",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1741162076100,
-      "tag": "0003_polite_roughhouse",
+      "when": 1741250321413,
+      "tag": "0000_romantic_unus",
       "breakpoints": true
     }
   ]

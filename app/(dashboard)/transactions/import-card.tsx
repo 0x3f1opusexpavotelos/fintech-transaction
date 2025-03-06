@@ -1,95 +1,89 @@
+"use client"
+
 import { useState } from "react"
-import { format, parse } from "date-fns"
-
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { ImportTable } from "@/app/(dashboard)/transactions/import-table"
 import { Button } from "@/components/ui/button"
+import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card"
+
+import { transactions as transactionsSchema } from "@/db/schema"
 import { convertAmountToMiliunits } from "@/lib/utils"
+import { parse } from "date-fns"
 
-import { ImportTable } from "./import-table"
+const InputFormat = "yyyy-MM-dd HH:mm:ss"
+// const OutputFormat = "yyyy-MM-dd"
+const RequiresColumns = ["amount", "date", "payee"]
 
-const dateFormat = "yyyy-MM-dd HH:mm:ss"
-const outputFormat = "yyyy-MM-dd"
-
-const requiredOptions = ["amount", "date", "payee"]
-
-interface SelectedColumnsState {
-  [key: string]: string
+// overwirte/remap  existing data field
+type ApiFromValues = Omit<typeof transactionsSchema.$inferInsert, "date"> & {
+  date: string
 }
 
 type Props = {
   data: string[][]
   onCancel: () => void
-  onSubmit: (data: any) => void
+  onSubmit: (values: (typeof transactionsSchema.$inferInsert)[]) => void
 }
 
-// const isSkip = (prev, value) => key =>  value === "skip" || prev[key] === value
+export const ImportCard = ({ onCancel, data, onSubmit }: Props) => {
+  const [headers, ...body] = data
 
-export const ImportCard = ({ data, onCancel, onSubmit }: Props) => {
-  const [selectedColumns, setSelectedColumns] = useState<SelectedColumnsState>(
-    {}
+  const [selectedColumns, setSelectedColumns] = useState<string[]>(
+    new Array(headers.length).fill("skip")
   )
 
-  const headers = data[0]
-  const body = data.slice(1)
+  const isEnable = RequiresColumns.every((col) => selectedColumns.includes(col))
 
-  const onTableHeadSelectChange = (col: number, newVal: string) => {
+  const progress = selectedColumns.filter((col) => col !== "skip").length
+  // const [missingColumns, setMissingColumns] = useState<string[]>([])
+  // const validateSelection = () => {
+  //   const missing = RequiresColumns.filter((col) =>
+  //     selectedColumns.includes(col)
+  //   )
+  //   setMissingColumns(missing)
+  //   setIsDisabled(missing.length > 0)
+  // }
+  // useEffect(() => {
+  //   validateSelection()
+  // }, [selectedColumns, RequiresColumns])
+
+  const onTableHeadSelectChange = (colIndex: number, value: string) => {
     setSelectedColumns((prev) => {
-      const next = { ...prev }
-      if (prev[col] === newVal || newVal === "skip") {
-        return {
-          ...prev,
-          col: "skip"
-        }
+      const newSelectedColumns = [...prev]
+      if (prev[colIndex] === value || value === "skip") {
+        newSelectedColumns[colIndex] = "skip"
+      } else {
+        newSelectedColumns[colIndex] = value
       }
-      return {
-        ...prev,
-        col: newVal
-      }
+      return newSelectedColumns
     })
   }
 
-  const progress = Object.values(selectedColumns).filter(Boolean).length
-
   const handleContinue = () => {
-    const getColumnIndex = (column: string) => {
-      return column.split("_")[1]
-    }
-
-    const mappedData = {
-      headers: headers.map((_header, index) => {
-        const columnIndex = getColumnIndex(`column_${index}`)
-        return selectedColumns[`column_${columnIndex}`] || null
-      }),
-      body: body
-        .map((row) => {
-          const transformedRow = row.map((cell, index) => {
-            const columnIndex = getColumnIndex(`column_${index}`)
-            return selectedColumns[`column_${columnIndex}`] ? cell : null
-          })
-
-          return transformedRow.every((item) => item === null)
-            ? []
-            : transformedRow
+    const filteredData = {
+      body: body.map((row) =>
+        row.map((cell, index) => {
+          if (selectedColumns[index] === "skip") {
+            return "skip"
+          }
+          return cell
         })
-        .filter((row) => row.length > 0)
+      ),
+      headers: selectedColumns
     }
-
-    const arrayOfData = mappedData.body.map((row) => {
-      return row.reduce((acc: any, cell, index) => {
-        const header = mappedData.headers[index]
-        if (header !== null) {
-          acc[header] = cell
-        }
-
-        return acc
+    const parsedData = filteredData.body.map((row) =>
+      filteredData.headers.reduce((acc, key, i) => {
+        if (key === "skip") return acc
+        return { ...acc, [key]: row[i] }
       }, {})
-    })
+    ) as ApiFromValues[]
 
-    const formattedData = arrayOfData.map((item) => ({
+    const formattedData = parsedData.map((item: ApiFromValues) => ({
       ...item,
-      amount: convertAmountToMiliunits(parseFloat(item.amount)),
-      date: format(parse(item.date, dateFormat, new Date()), outputFormat)
+      amount: convertAmountToMiliunits(parseFloat(item.amount + "")),
+      // date: format(parse(item.date, InputFormat, new Date()), OutputFormat)
+      date: parse(item.date, InputFormat, new Date())
     }))
+    console.log({ formatted: formattedData })
 
     onSubmit(formattedData)
   }
@@ -101,17 +95,17 @@ export const ImportCard = ({ data, onCancel, onSubmit }: Props) => {
           <CardTitle className="text-xl line-clamp-1">
             Import Transaction
           </CardTitle>
-          <div className="flex flex-col lg:flex-row gap-y-2 items-center gap-x-2">
+          <div className="flex flex-col gap-y-2 gap-x-2 lg:flex-row items-center">
             <Button onClick={onCancel} size="sm" className="w-full lg:w-auto">
               Cancel
             </Button>
             <Button
-              size="sm"
-              disabled={progress < requiredOptions.length}
               onClick={handleContinue}
+              disabled={!isEnable}
+              size="sm"
               className="w-full lg:w-auto"
             >
-              Continue ({progress} / {requiredOptions.length})
+              Continue ({progress} / {RequiresColumns.length})
             </Button>
           </div>
         </CardHeader>
@@ -119,8 +113,8 @@ export const ImportCard = ({ data, onCancel, onSubmit }: Props) => {
           <ImportTable
             headers={headers}
             body={body}
-            selectedColumns={selectedColumns}
             onTableHeadSelectChange={onTableHeadSelectChange}
+            selectedColumns={selectedColumns}
           />
         </CardContent>
       </Card>

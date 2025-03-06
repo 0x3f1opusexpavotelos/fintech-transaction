@@ -2,16 +2,15 @@
 
 import { toast } from "sonner"
 import { useState } from "react"
-import { Loader2, Plus } from "lucide-react"
+import { transactions as transactionSchema } from "@/db/schema"
 
 import { useNewTransaction } from "@/features/transactions/hooks/use-new-transaction"
 import { useGetTransactions } from "@/features/transactions/api/use-get-transactions"
 import { useBulkDeleteTransactions } from "@/features/transactions/api/use-bulk-delete-transactions"
 import { useBulkCreateTransactions } from "@/features/transactions/api/use-bulk-create-transactions"
-
 import { useSelectAccount } from "@/features/accounts/hooks/use-select-account"
 
-import { transactions as transactionSchema } from "@/db/schema"
+import { Loader2, Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { DataTable } from "@/components/data-table"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -19,7 +18,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 import { columns } from "./columns"
 import { ImportCard } from "./import-card"
-// import { UploadButton } from "./upload-button";
+import { ImportButton } from "./import-button"
 
 enum VARIANTS {
   LIST = "LIST",
@@ -37,11 +36,11 @@ const TransactionsPage = () => {
   const [variant, setVariant] = useState<VARIANTS>(VARIANTS.LIST)
   const [importResults, setImportResults] = useState(INITIAL_IMPORT_RESULTS)
 
-  // const onUpload = (results: typeof INITIAL_IMPORT_RESULTS) => {
-  //   console.log({ results })
-  //   setImportResults(results)
-  //   setVariant(VARIANTS.IMPORT)
-  // }
+  const onUploadAccepted = (results: typeof INITIAL_IMPORT_RESULTS) => {
+    console.log({ results })
+    setImportResults(results)
+    setVariant(VARIANTS.IMPORT)
+  }
 
   const onCancelImport = () => {
     setImportResults(INITIAL_IMPORT_RESULTS)
@@ -114,7 +113,7 @@ const TransactionsPage = () => {
           <CardTitle className="text-xl line-clamp-1">
             Transaction History
           </CardTitle>
-          <div className="flex flex-col lg:flex-row gap-y-2 items-center gap-x-2">
+          <div className="flex flex-col gap-y-2 gap-x-2 lg:flex-row items-center">
             <Button
               onClick={newTransaction.onOpen}
               size="sm"
@@ -123,7 +122,7 @@ const TransactionsPage = () => {
               <Plus className="size-4 mr-2" />
               Add new
             </Button>
-            {/* <UploadButton onUpload={onUpload} /> */}
+            <ImportButton onUploadAccepted={onUploadAccepted} />
           </div>
         </CardHeader>
         <CardContent>

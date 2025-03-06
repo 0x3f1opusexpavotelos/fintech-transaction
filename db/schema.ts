@@ -31,7 +31,7 @@ export const transactions = pgTable("transactions", {
   id: text().primaryKey(),
   amount: integer().notNull(),
   payee: text("").notNull(),
-  date: timestamp("data", { mode: "date" }).notNull(),
+  date: timestamp("date", { mode: "date" }).notNull(),
   notes: text(),
   accountId: text("account_id")
     .notNull()

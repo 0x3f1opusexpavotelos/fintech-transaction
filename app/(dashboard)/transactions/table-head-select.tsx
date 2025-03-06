@@ -1,4 +1,3 @@
-import { cn } from "@/lib/utils"
 import {
   Select,
   SelectContent,
@@ -6,41 +5,42 @@ import {
   SelectTrigger,
   SelectValue
 } from "@/components/ui/select"
-
-type Props = {
-  columnIndex: number
-  selectedColumns: Record<string, string | null>
-  onChange: (columnIndex: number, value: string | null) => void
-}
+import { cn } from "@/lib/utils"
 
 const options = ["amount", "payee", "date"]
 
+type Props = {
+  selectedColumns: string[]
+  columnIndex: number
+  onChange: (columnIndex: number, value: string) => void
+}
 export const TableHeadSelect = ({
-  columnIndex,
   selectedColumns,
+  columnIndex,
   onChange
 }: Props) => {
-  const currentSelection = selectedColumns[`column_${columnIndex}`]
+  const currentSelection = selectedColumns[columnIndex]
 
   return (
     <Select
-      value={currentSelection || ""}
+      value={currentSelection}
       onValueChange={(value) => onChange(columnIndex, value)}
     >
       <SelectTrigger
         className={cn(
           "focus:ring-offset-0 focus:ring-transparent outline-none border-none bg-transparent capitalize",
-          currentSelection && "text-blue-500"
+          currentSelection !== "skip" && "text-blue-500"
         )}
       >
-        <SelectValue placeholder="Skip" />
+        <SelectValue placeholder="skip"></SelectValue>
       </SelectTrigger>
       <SelectContent>
         <SelectItem value="skip">Skip</SelectItem>
         {options.map((option, index) => {
+          const selectedIdx = selectedColumns.indexOf(option)
+
           const disabled =
-            Object.values(selectedColumns).includes(option) &&
-            selectedColumns[`column_${columnIndex}`] !== option
+            selectedColumns.includes(option) && columnIndex !== selectedIdx
 
           return (
             <SelectItem

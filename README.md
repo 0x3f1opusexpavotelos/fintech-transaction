@@ -64,7 +64,100 @@ query,filter,add or edit transaction
 
 
 
+if selected,disable
+if deselected, enable
+
 dashboard.overview
 subscription and paywall
 
 
+
+```ts
+// array of object → fields-data object
+const objectsToFieldsData = (arr: ObjectArray): FieldsData => {
+  if (!arr.length) return { fields: [], data: [] };
+  const fields = Object.keys(arr[0]);
+  return {
+    fields,
+    data: arr.map(obj => fields.map(key => obj[key]))
+  };
+};
+
+// field-data object to array of object
+const fieldsDataToObjects = ({ fields, data }: FieldsData): ObjectArray =>
+  data.map(row =>
+    fields.reduce((obj, key, i) => ({ ...obj, [key]: row[i] }), {})
+  );
+
+
+
+// Object Array → Array of Arrays
+const objectsToArrays = (arr: ObjectArray): ArrayOfArrays =>
+  [Object.keys(arr[0]), ...arr.map(obj => Object.values(obj))]
+
+
+// Array of Arrays → Object Array
+const arraysToObjects = (arr: ArrayOfArrays): ObjectArray => {
+  const [fields, ...data] = arr;
+  return data.map(row =>
+    fields.reduce((obj, key, i) => ({ ...obj, [key]: row[i] }), {})
+  );
+};
+
+```
+
+
+
+array of object
+```
+[
+	{
+		"Column 1": "foo",
+		"Column 2": "bar"
+	},
+	{
+		"Column 1": "abc",
+		"Column 2": "def"
+	}
+]
+```
+
+field-data obejct
+```
+{
+	"fields": ["Column 1", "Column 2"],
+	"data": [
+		["foo", "bar"],
+		["abc", "def"]
+	]
+}
+```
+
+array of array
+```
+[
+	["Column 1", "Column 2"],
+	["foo", "bar"],
+	["abc", "def"]
+]
+
+```
+
+
+view-transiation api
+
+
+
+> [!TIP]
+> 有些api要在pull request中找到用例 - not yet documented
+https://github.com/colinhacks/zod/pull/3415
+
+
+z.extend
+z.remap
+z.mergei
+
+
+parse dateStr to Date object,
+or format Date object to dateStr.
+ISO 8601格式是“YYYY-MM-DDTHH:mm:ss”
