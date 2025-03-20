@@ -13,6 +13,8 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN bun run build
 
+
+
 # 3.start the server
 FROM base AS runner
 
@@ -21,7 +23,10 @@ ENV NODE_ENV=production
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
-
+# Install dotenvx
+RUN curl -sfS https://dotenvx.sh/install.sh | sh
 
 EXPOSE 3000
-CMD ["bun", "run", "server.js"]
+
+# ensure a .env file in the root of project
+CMD ["dotenvx", "run","--","bun", "run", "server.js"]

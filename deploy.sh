@@ -30,38 +30,134 @@ sudo swapon /swapfile
 # Make swap permanent
 echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
 
-# Install Docker
-sudo apt install apt-transport-https ca-certificates curl software-properties-common -y
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" -y
-sudo apt update
-sudo apt install docker-ce -y
 
-# Install Docker Compose
-sudo rm -f /usr/local/bin/docker-compose
-sudo curl -L "https://github.com/docker/compose/releases/download/v2.24.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+check_docker_installed() {
+  if command -v docker &> /dev/null && docker --version &> /dev/null; then
+    echo "Docker is already installed. Current version: $(docker --version)"
+    return 0
+  fi
+  return 1
+}
 
-# Wait for the file to be fully downloaded before proceeding
-if [ ! -f /usr/local/bin/docker-compose ]; then
-  echo "Docker Compose download failed. Exiting."
-  exit 1
-fi
+check_docker_compose_installed() {
+  if command -v docker-compose &> /dev/null && docker-compose --version &> /dev/null; then
+    echo "Docker Compose is already installed. Current version: $(docker-compose --version)"
+    return 0
+  fi
+  return 1
+}
 
-sudo chmod +x /usr/local/bin/docker-compose
+# Install Docker if not already exits
+install_docker() {
+  if check_docker_installed; then
+    echo "Skipping Docker installation."
+  else
+    echo "Installing Docker CE..."
+    sudo apt install apt-transport-https ca-certificates curl software-properties-common -y
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+    sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" -y
+    sudo apt update
+    sudo apt install docker-ce -y
 
-# Ensure Docker Compose is executable and in path
-sudo ln -sf /usr/local/bin/docker-compose /usr/bin/docker-compose
+    # Verify installation
+    if ! check_docker_installed; then
+      echo "Docker installation failed."
+      exit 1
+    fi
 
-# Verify Docker Compose installation
-docker-compose --version
-if [ $? -ne 0 ]; then
-  echo "Docker Compose installation failed. Exiting."
-  exit 1
-fi
+    # Optional: Add current user to docker group to avoid using sudo
+    sudo usermod -aG docker $USER
+    echo "Docker installed successfully. You may need to log out and back in for group changes to take effect."
+  fi
+}
+
+
+
+# Install Docker Compose if not already installed
+# Install Docker if not already installed
+install_docker() {
+  if check_docker_installed; then
+    echo "Skipping Docker installation."
+  else
+    echo "Installing Docker CE..."
+    sudo apt install apt-transport-https ca-certificates curl software-properties-common -y
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+    sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" -y
+    sudo apt update
+    sudo apt install docker-ce -y
+
+    # Verify installation
+    if ! check_docker_installed; then
+      echo "Docker installation failed."
+      exit 1
+    fi
+
+    # Add current user to docker group to avoid using sudo
+    sudo usermod -aG docker $USER
+    echo "Docker installed successfully."
+
+    # Make docker group membership take effect immediately
+    echo "Activating docker group membership without logout..."
+    newgrp docker << EONG
+    # This subshell now has the docker group active
+    echo "Docker group membership activated. Testing with: groups:"
+    docker --version
+
+    # Continue with the rest of the script
+    echo "Continuing with setup..."
+EONG
+  fi
+}
+
+
+
+install_docker_compose() {
+  if check_docker_compose_installed; then
+    echo "Skipping Docker Compose installation."
+  else
+    echo "Installing Docker Compose..."
+
+    # cleanup previous before install
+    sudo rm -f /usr/local/bin/docker-compose
+    sudo curl -L "https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+
+    # post-installed checked
+    if [ ! -f /usr/local/bin/docker-compose ]; then
+      echo "Docker Compose download failed. Exiting."
+      exit 1
+    fi
+
+    sudo chmod +x /usr/local/bin/docker-compose
+
+    # Ensure Docker Compose is executable and in path
+    sudo ln -sf /usr/local/bin/docker-compose /usr/bin/docker-compose
+
+
+    # Verify Docker Compose installation
+    docker-compose --version
+    if [ $? -ne 0 ]; then
+    echo "Docker Compose installation failed. Exiting."
+    exit 1
+    fi
+
+    echo "Docker Compose installed successfully."
+  fi
+}
+
+
+
+
+echo "Checking for existing Docker installation..."
+install_docker
+
+echo "Checking for existing Docker Compose installation..."
+install_docker_compose
 
 # Ensure Docker starts on boot and start Docker service
 sudo systemctl enable docker
 sudo systemctl start docker
+
+echo "Docker environment setup complete!"
 
 # Clone the Git repository
 if [ -d "$APP_DIR" ]; then
