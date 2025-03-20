@@ -254,3 +254,296 @@ npm i cva@npm:class-variance-authority
 import { cva } from "cva";
 ```
 
+## UML: Devloping APPlciatin using Model
+
+- sequence digram
+- component digram
+- class digram
+- Gitflow diagram
+- Kanban boards
+-  dependency graph
+
+
+DTO(Data Transfer Object):数据传输对象，Service 或 Manager 向外传输的对象。
+VO(View Object):显示层对象，通常是 Web 向模板渲染引擎层传输的对象。
+DAO (Data Access Object ) 数据访问对象
+BO(Business Object):业务对象，由 Service 层输出的封装业务逻辑的对象。
+DO(Data Object):此对象的属性与数据库表结构一一对应，通过 DAO 层向上传输数据源对象。
+
+[system sequence diagrams,](https://www.drawio.com/blog/sequence-diagrams)
+
+
+- order
+- involved party/particiant
+- cross system boundaries
+
+the power the batch
+
+lifeline
+activation Bar
+selft call shape
+The Callback shape (dispatch-return)
+
+
+
+## Deploy
+
+
+### Deploy platform choice
+netlify
+vercel
+render.com
+cloudfare worker
+fly.io
+
+
+### Deploy config
+
+
+deploy platform expect build scripts and start start scripts
+
+```json
+{
+  "scripts": {
+    "build" : "tsc  && tsc-alias",
+    "start" : "node dist",
+    "vercel:preview:": "vercel:preview"
+  }
+}
+
+```
+
+#### Vercel
+
+**glob pattern**
+
+`api/*.js` (matches all js files under all current direcotry)
+`api/**/*.ts` (matches all ts files  under any level subDirecoty)
+`api/**/*` (matches all files  under any level subDirecotry)
+`/(.*)`: any filename
+
+
+
+- severless Functions support runtime `Node.js`, `Python`, `Go`, `Edge`
+
+- static assets
+
+- install command:
+- build command:
+- output Drecotory
+- public Directory
+- root Directory
+
+
+
+
+```json [vercel.json]
+{
+  "buildCommand": "next build",
+  // "rewrites": [{"source" : "/(.*)", "destination": "/api"}]
+  "rewrites": [
+    {
+      "source": "/api/:path",
+      "destination": "https://api.example.com/:path"
+    },
+    {
+      "source": "/resize/:width/:height",
+      "destination": "/api/sharp"
+    }
+  ]
+}
+```
+
+
+### Hono
+
+
+queryClient
+
+inferType from db schema
+
+```ts [api/route.ts]
+import {handle} from "hono/vercel"
+export const = "edge"
+import app from "../dist/app.js"
+```
+
+read the env
+```ts
+// merge the env
+app.use((c, next) => {
+  c.env = Object.assign(c.env, process.env)
+  return next
+})
+// switch to production API endpoint
+app.use((c,next) => {
+  if(c.env.NODE_ENV === "production") {
+    const domain = "https://finance.ransom.tech"
+    c.env.NEXT_PUBLIC_URL=domain
+  }
+})
+
+```
+
+```ts
+import {
+  createInsertSchema,
+  createSelectSchema
+}  from "drizzle-zod"
+export const InsertUserSchema =
+  createInertSchema(schema.users, {
+    email: (schema) => schema.email.email()
+  })
+    .omit({
+      id: true,
+      createAt: true
+    })
+    .openapi(""Inser Users)
+
+expor type InsertUserSchema = z.infer<
+  typeof InsertUserSchema
+>
+```
+
+
+
+
+
+### DB coonection
+
+```ts [drizzle.config.ts]
+dbCredentials: {
+    url: process.env.DATABASE_URL!
+  }
+dbCredentails to connect database
+```
+
+``` [.env.local]
+# connection rul w/ username, passwd
+# connection url w/ auth token
+DATABSE_AUTH_TOKEN=
+DATABASE_URL=
+```
+
+
+
+### build before deploy
+
+
+tsx: ts file executor - transiple file just in time and run it throught nodejs
+
+
+using `tsup` or native `tsc` compiler to compile `.ts` file to `.js` file
+
+
+build esm requres resolve full path
+
+esm dont't handle node-like module reoslution
+```
+LOAD_AS_FILE(X)
+LOAD_INDEX(X)
+LOAD_AS_DIRECTORY(X)
+```
+
+#### lib that handle esm-import-alias
+```json
+{
+  "scripts": {"build": "tsc && tsc-alias"}
+}
+```
+```json [tsconfig.json]
+{
+  "tsc-alias" : {
+    "resolveFullPath": true,
+    "outDir": "./dist", // ".lib"
+    "declarationDir": "./dists/types",
+    "watch": true
+  }
+}
+
+```
+
+#### lib that hanlder esm-auto-import/esm-import-directory
+
+
+### URL
+
+ES modules are resolved and cached as URLs
+#### Percent-encoding
+URLs are permiited to only certain range of characters
+any char failling outside of that allow range must be encoding
+
+### URL schema
+`node:URLs` load Node.js builtin modules
+`data:URLs`, URLs prefixed with the `data:` scheme,
+`file: URLs`
+
+### module metadata info injection
+A module namespace object is an object that describes all exports from a module
+access the module namespace object of a module: through a namespace import (import * as name from moduleName),
+or through the fulfillment value of a dynamic import.
+
+
+### rqurie module resoultion
+
+
+
+```
+require(X) from module at path Y
+1. If X is a core/bare module,
+   a. return the core module
+   b. STOP
+2. If X begins with '/'
+   a. set Y to the file system root
+3. If X begins with './' or '/' or '../'
+   a. LOAD_AS_FILE(Y + X)
+   b. LOAD_AS_DIRECTORY(Y + X)
+   c. THROW "not found"
+4. If X begins with '#'
+   a. LOAD_PACKAGE_IMPORTS(X, dirname(Y))
+```
+
+
+
+load esm using require (cjs consumer)
+```js
+class noc{}
+function nof () {}
+module.exports = {
+  default: noc
+  not: nof,
+
+}
+
+// [Module: null prototype] {
+//   distance: [Function: distance]
+// }
+
+const point = require('./point.mjs');
+console.log(point);
+// [Module: null prototype] {
+//   default: [class Point],
+//   __esModule: true,
+// }
+```
+
+
+```js
+import.meta.resolve('../vite.config.ts') // => "file://path/to/base/vite.config.ts"
+import.meta.resolve("zod"); // => "file:///path/to/project/node_modules/zod/index.js"
+
+// Resolve a module specifier (e.g. "zod" or "./file.tsx", "../vite.config.ts") to a string url
+import.meta.resolve
+import.meta.url	// A file url to the current mod, like 'file:///path/to/project/index.ts'
+
+// bun runtime injection
+import.meta.dir   // 	Absolute path to the directory containing the current file
+ import.meta.path	 // Absolute path to the current file
+
+// node runtime jnjection
+ import.meta.dirname
+ import.meta.filename
+```
+
+
+## Self-hosting

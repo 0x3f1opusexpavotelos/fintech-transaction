@@ -1,4 +1,5 @@
 import { Hono } from "hono"
+
 import { handle } from "hono/vercel"
 import { HTTPException } from "hono/http-exception"
 
@@ -6,6 +7,8 @@ import accounts from "./accounts"
 import transactions from "./transactions"
 import categories from "./categories"
 import summary from "./summary"
+
+export const runtime = "edge"
 
 const app = new Hono().basePath("/api")
 

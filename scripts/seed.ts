@@ -1,11 +1,11 @@
 import { accounts, categories, transactions } from "@/db/schema"
 import { convertAmountToMiliunits } from "@/lib/utils"
 import { eachDayOfInterval, format, subDays } from "date-fns"
-import { config } from "dotenv"
 import { neon } from "@neondatabase/serverless"
 import { drizzle } from "drizzle-orm/neon-http"
+// import { config } from "dotenv"
 
-config({ path: ".env.local" })
+// config({ path: ".env.local" })
 
 const sql = neon(process.env.DATABASE_URL!)
 const db = drizzle(sql)
