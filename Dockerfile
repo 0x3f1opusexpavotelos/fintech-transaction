@@ -1,9 +1,9 @@
-FROM oven/bun:apline AS base
+FROM oven/bun:alpine AS base
 
 FROM base AS deps
 # 1.install deps
 WORKDIR /app
-COPY package.json bun.lockb ./
+COPY package.json bun.lock ./
 RUN bun install --forzen-lockfile
 
 # 2. build the app

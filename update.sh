@@ -2,7 +2,7 @@
 
 # Script Vars
 REPO_URL="https://github.com/leerob/next-self-host.git"
-APP_DIR=~/myapp
+APP_DIR=~/app
 
 # Pull the latest changes from the Git repository
 if [ -d "$APP_DIR" ]; then

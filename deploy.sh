@@ -1,10 +1,7 @@
 #!/bin/bash
 
 # Env Vars
-# POSTGRES_USER="myuser"
-# POSTGRES_PASSWORD=$(openssl rand -base64 12)  # Generate a random 12-character password
-# POSTGRES_DB="mydatabase"
-# SECRET_KEY="my-secret" # for the demo app
+
 
 
 
@@ -195,8 +192,8 @@ if [ ! -f /etc/letsencrypt/ssl-dhparams.pem ]; then
 fi
 
 # Create Nginx config with reverse proxy, SSL support, rate limiting, and streaming support
-sudo cat > /etc/nginx/sites-available/app <<EOL
-limit_req_zone \$binary_remote_addr zone=mylimit:10m rate=10r/s;
+sudo bash -c  '> cat > /etc/nginx/sites-available/app <<EOL
+limit_req_zone \$binary_remote_addr zone=limit_main:10m rate=10r/s;
 
 server {
     listen 80;
@@ -216,7 +213,7 @@ server {
     ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
 
     # Enable rate limiting
-    limit_req zone=mylimit burst=20 nodelay;
+    limit_req zone=limit_main burst=20 nodelay;
 
     location / {
         proxy_pass http://localhost:3000;
@@ -231,7 +228,7 @@ server {
         proxy_set_header X-Accel-Buffering no;
     }
 }
-EOL
+EOL'
 
 # Create symbolic link if it doesn't already exist
 sudo ln -s /etc/nginx/sites-available/app /etc/nginx/sites-enabled/app
