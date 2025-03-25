@@ -10,7 +10,7 @@ DOMAIN_NAME="fintech.lavitalite.tech" # replace with your own
 EMAIL="hack.xiyuan@gmail.com" # replace with your own
 
 # Script Vars
-REPO_URL="git@github.com:0x3f1opusexpavotelos/fintech-transaction.git"
+REPO_URL="https://github.com/0x3f1opusexpavotelos/fintech-transaction.git"
 APP_DIR=~/app
 SWAP_SIZE="1G"  # Swap size of 1GB
 
