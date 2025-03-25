@@ -369,21 +369,7 @@ import app from "../dist/app.js"
 ```
 
 read the env
-```ts
-// merge the env
-app.use((c, next) => {
-  c.env = Object.assign(c.env, process.env)
-  return next
-})
-// switch to production API endpoint
-app.use((c,next) => {
-  if(c.env.NODE_ENV === "production") {
-    const domain = "https://finance.ransom.tech"
-    c.env.NEXT_PUBLIC_URL=domain
-  }
-})
 
-```
 
 ```ts
 import {
@@ -572,13 +558,63 @@ chmod +x ~/deploy.sh
 - `docker exec -it myapp-db-1 psql -U myuser -d mydatabase` - enter Postgres db
 
 
-### env config management
-loads environment variables from a `.env` file into `process.env`
+### secerts cross env management
 
-- as libray `require('dotenv').config()` or as cli `dotenvx run -f -- <command>`
+```ts
+// merge the env
+app.use((c, next) => {
+  c.env = Object.assign(c.env, process.env)
+  return next
+})
+// switch to production API endpoint
+app.use((c,next) => {
+  if(c.env.NODE_ENV === "production") {
+    const domain = "https://finance.ransom.tech"
+    c.env.NEXT_PUBLIC_URL=domain
+  }
+})
+
+```
+### Hard code secrets in your app
+
+### manual switch with .env.example
+
+[push to secret valut](https://www.dotenv.org/)
+[secrets, certificates, SSH keys managmen across team and infra](https://infisical.com/)
+
+
+### env encryption
+
+encrypt variable .env file and push to git
+
+
+inject/loads environment variables from a `.env` file into `process.env`
+
+as libray `require('dotenv').config()` or as cli `dotenvx run -f -- <command>`
+
+
+dotenvx run -f `$project_deploy_conf_dir/.env` -- docker compose up --build
+
+
+[enterpriese secret manager - scaleway](https://www.scaleway.com/en/secret-manager/)
+
+scwsm provider: Scaleway Secret Manager
+awssm provider: AWS Secrets Manager
+azkv provider: Azure Key Vault
+gcpsm provider: GCP Secret Manager
+
+## team, project, infra scope env variable
+
+
+
+
 
 Encrypted Environment Variables
 Cross-Platform and Cross-Framework Compatibility:
 Multi-Environment Support
 
-Create a `.env.lcoal` file and use -f to load it
+
+
+
+
+##
