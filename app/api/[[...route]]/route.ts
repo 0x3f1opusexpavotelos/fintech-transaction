@@ -7,6 +7,7 @@ import accounts from "./accounts"
 import transactions from "./transactions"
 import categories from "./categories"
 import summary from "./summary"
+import plaid from "./plaid"
 
 export const runtime = "edge"
 
@@ -22,6 +23,7 @@ app.onError((err, c) => {
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const routes = app
+  .route("/plaid", plaid)
   .route("/accounts", accounts)
   .route("/categories", categories)
   .route("/transactions", transactions)

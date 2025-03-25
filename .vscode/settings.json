@@ -28,7 +28,7 @@
 
   // ========== Visuals ==========
   "editor.guides.bracketPairs": "active",
-  "editor.lineNumbers": "interval",
+
   "editor.renderWhitespace": "boundary",
   "workbench.editor.tabActionLocation": "left",
   "workbench.list.smoothScrolling": true,

@@ -1,14 +1,16 @@
-import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
-import { NextResponse } from "next/server";
+import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server"
+import { NextResponse } from "next/server"
 
-const isPublicRoute = createRouteMatcher(["/sign-in(.*)", "/api(.*)"]);
+const isPublicRoute = createRouteMatcher(["/sign-in(.*)", "/api(.*)"])
 
 export default clerkMiddleware(async (auth, request) => {
+  // rewrite处理与 __clerk 相关的请求
+
   if (!isPublicRoute(request)) {
-    await auth.protect();
+    await auth.protect()
   }
-  return NextResponse.next();
-});
+  return NextResponse.next()
+})
 
 export const config = {
   matcher: [
@@ -17,4 +19,4 @@ export const config = {
     // Always run for API routes
     "/(api|trpc)(.*)"
   ]
-};
+}

@@ -547,3 +547,38 @@ import.meta.dir   // 	Absolute path to the directory containing the current file
 
 
 ## Self-hosting
+
+
+
+```bash
+# Download the deployment script:
+curl -o ~/deploy.sh https://github.com/0x3f1opusexpavotelos/finance-sass/deploy.sh
+# Run the deployment script:
+chmod +x ~/deploy.sh
+./deploy.sh
+````
+
+
+
+## Helpful Commands
+
+- `docker-compose ps` – check status of Docker containers
+- `docker-compose logs web` – view Next.js output logs
+- `docker-compose logs cron` – view cron logs
+- `docker-compose down` - shut down the Docker containers
+- `docker-compose up --build -d` - start containers in the background
+- `sudo systemctl restart nginx` - restart nginx
+- `docker exec -it myapp-web-1 sh` - enter Next.js Docker container
+- `docker exec -it myapp-db-1 psql -U myuser -d mydatabase` - enter Postgres db
+
+
+### env config management
+loads environment variables from a `.env` file into `process.env`
+
+- as libray `require('dotenv').config()` or as cli `dotenvx run -f -- <command>`
+
+Encrypted Environment Variables
+Cross-Platform and Cross-Framework Compatibility:
+Multi-Environment Support
+
+Create a `.env.lcoal` file and use -f to load it

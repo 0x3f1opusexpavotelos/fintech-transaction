@@ -192,7 +192,7 @@ if [ ! -f /etc/letsencrypt/ssl-dhparams.pem ]; then
 fi
 
 # Create Nginx config with reverse proxy, SSL support, rate limiting, and streaming support
-sudo bash -c  '> cat > /etc/nginx/sites-available/app <<EOL
+sudo tee  /etc/nginx/sites-available/app <<EOL
 limit_req_zone \$binary_remote_addr zone=limit_main:10m rate=10r/s;
 
 server {
@@ -227,8 +227,18 @@ server {
         proxy_buffering off;
         proxy_set_header X-Accel-Buffering no;
     }
+
+    location /__clerk/ {
+        rewrite          ^/__clerk/(.*)$ /$1 break;
+        proxy_pass       https://frontend-api.$DOMAIN_NAME;
+        proxy_set_header Clerk-Proxy-Url https://$DOMAIN_NAME/__clerk;
+        proxy_set_header Clerk-Secret-Key sk_live_***;
+        proxy_set_header X-Forwarded-For $remote_addr;
+        proxy_redirect   off;
+    }
+
 }
-EOL'
+EOL
 
 # Create symbolic link if it doesn't already exist
 sudo ln -s /etc/nginx/sites-available/app /etc/nginx/sites-enabled/app
@@ -248,4 +258,4 @@ fi
 
 # Output final message
 echo "Deployment complete. Your Next.js app and PostgreSQL database are now running.
-Next.js is available at https://$DOMAIN_NAME,
+Next.js is available at https://$DOMAIN_NAME"
