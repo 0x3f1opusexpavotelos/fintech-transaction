@@ -5,13 +5,15 @@ FROM base AS deps
 WORKDIR /app
 COPY package.json bun.lock ./
 RUN  \
-    if [ -f bun.lock] bun install --forzen-lockfile; \
+    if [ -f bun.lock ]; then bun install --frozen-lockfile; \
     elif [ -f pnpm-lock.yaml]; then corepack enable pnpm && pnpm; \
     elif [ -f yarn.lock]; then yarn --frozen-lockfile; \
     elif [ -f package.json]; then npm ci; \
     else echo  "Lockfile not found."  && exit 1; \
     fi
 
+
+RUN bun install -g pm2
 
 
 # 2. build the app
@@ -39,9 +41,8 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
 
+
 USER nextjs
-
-
 
 EXPOSE 3000
 
@@ -53,4 +54,5 @@ ENV PORT=3000
 # Install dotenvx
 # RUN curl -sfS https://dotenvx.sh/install.sh | sh
 # ENTRYPOINT ["dotenvx", "run", "--"]
-CMD ["bun", "run", "server.js"]
+# CMD ["bun", "run", "server.js"]
+CMD ["pm2", "start", "pm2.config.js"]

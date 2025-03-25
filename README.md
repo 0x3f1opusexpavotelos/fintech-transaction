@@ -618,3 +618,8 @@ Multi-Environment Support
 
 
 ##
+
+
+## pm2
+
+`PATH:Dockerfile RUN bun install -g pm2`
