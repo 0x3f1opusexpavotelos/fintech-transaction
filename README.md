@@ -620,6 +620,6 @@ Multi-Environment Support
 ##
 
 
-## pm2
+##  PM2, Node Cluster, or Neither in Kubernetes?
 
 `PATH:Dockerfile RUN bun install -g pm2`
