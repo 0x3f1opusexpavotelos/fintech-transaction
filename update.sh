@@ -3,7 +3,7 @@
 set -e
 
 # Script Vars
-REPO_URL="https://github.com/leerob/next-self-host.git"
+REPO_URL="git@github.com:0x3f1opusexpavotelos/fintech-transaction.git"
 APP_DIR=~/apps/transaction
 ENV_FILE=${ENV_FILE:-~/deploy-conf/.env}
 
