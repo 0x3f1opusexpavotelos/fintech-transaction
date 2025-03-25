@@ -6,7 +6,6 @@ import {
   CountryCode,
   LinkTokenCreateRequest,
   PlaidApi,
-  PlaidEnvironments,
   Products
 } from "plaid"
 import { z } from "zod"
@@ -15,9 +14,7 @@ import { createId } from "@paralleldrive/cuid2"
 import { db } from "@/db/drizzle"
 import { and, eq, isNotNull } from "drizzle-orm"
 import { accounts, categories, connectedBanks, transactions } from "@/db/schema"
-import { CategoryColumn } from "@/app/(dashboard)/transactions/category-column"
 import { convertAmountToMiliunits } from "@/lib/utils"
-import { useNetworkState } from "react-use"
 
 const configuration = new Configuration({
   basePath: process.env.PLAID_ENV!,
