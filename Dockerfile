@@ -31,8 +31,8 @@ FROM base AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 
-RUN adduser --system  --gid 1001 nodejs
-RUN adduser --system nextjs --uid 1001
+RUN addgroup --system --gid 1005 nodejs
+RUN adduser --system nextjs --uid 1005
 
 COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
