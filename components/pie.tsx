@@ -10,6 +10,7 @@ import {
   SelectValue
 } from "@/components/ui/select"
 import { Skeleton } from "@/components/ui/skeleton"
+import { usePaywall } from "@/features/subscriptions/hooks/use-paywall"
 import { Loader2, PieChart, Radar, Target } from "lucide-react"
 import { useState } from "react"
 type Props = {
@@ -21,10 +22,15 @@ type Props = {
 
 export const Pie = ({ data = [] }: Props) => {
   const [pieType, setPieType] = useState("pie")
+  const { shouldBlock, triggerPaywall } = usePaywall()
 
-  const onTypeChange = (value: string) => {
+  const onTypeChange = (type: string) => {
     // TODO add pay wall
-    setPieType(value)
+    if (type !== "area" && shouldBlock) {
+      triggerPaywall()
+      return
+    }
+    setPieType(type)
   }
   return (
     <Card className="border-none drop-shadow-sm">

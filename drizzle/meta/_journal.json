@@ -15,6 +15,20 @@
       "when": 1742896985203,
       "tag": "0001_aspiring_miracleman",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1742974012686,
+      "tag": "0002_oval_quasar",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1742974085939,
+      "tag": "0003_omniscient_legion",
+      "breakpoints": true
     }
   ]
 }

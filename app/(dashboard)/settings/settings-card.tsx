@@ -9,12 +9,17 @@ import { PlaidDisconnect } from "@/features/plaid/components/plaid-disconnect"
 import { useGetConnectedBank } from "@/features/plaid/api/use-get-connected-banks"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Loader2 } from "lucide-react"
+import { SubscriptionCheckout } from "@/features/subscriptions/components/subscription-checkout"
+import { useGetSubscription } from "@/features/subscriptions/api/use-get-subscription"
 
 export const SettingsCard = () => {
   const { data: connectedBanks, isLoading: isLoadingConnectedBanks } =
     useGetConnectedBank()
 
-  if (isLoadingConnectedBanks) {
+  const { data: subscription, isLoading: isLoadingSubscription } =
+    useGetSubscription()
+
+  if (isLoadingConnectedBanks || isLoadingSubscription) {
     return (
       <Card className="border-none drop-shadow-sm">
         <CardHeader>
@@ -57,6 +62,27 @@ export const SettingsCard = () => {
                 : "No bank account connected"}
             </div>
             {connectedBanks ? <PlaidDisconnect /> : <PlaidConnect />}
+          </div>
+        </div>
+        <div className="flex flex-col gap-y-2 lg:flex-row items-center">
+          <p className="text-sm font-medium w-full "> Subscription</p>
+          <div
+            className={cn(
+              "flex flex-row items-center justify-between",
+              "lg:justify-end"
+            )}
+          >
+            <div
+              className={cn(
+                "text-sm truncate flex items-center",
+                !subscription && "text-muted-foreground"
+              )}
+            >
+              {subscription
+                ? `Subscription ${subscription.status}`
+                : "No subscription active"}
+            </div>
+            <SubscriptionCheckout />
           </div>
         </div>
       </CardContent>

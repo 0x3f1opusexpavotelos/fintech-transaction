@@ -623,3 +623,48 @@ Multi-Environment Support
 ##  PM2, Node Cluster, or Neither in Kubernetes?
 
 `PATH:Dockerfile RUN bun install -g pm2`
+
+
+
+## payment api
+ purchase one-off and subscription products
+  a hosted checkout, which loads the checkout in a browser window, or our checkout overlay,
+  checkout flow
+ pre-filled Checkout fields
+
+```http
+https://[STORE].lemonsqueezy.com/checkout/buy/[VARIANT_ID]
+?checkout[email]=johndoe@example.com
+&checkout[name]=John Doe
+&checkout[billing_address][country]=US
+&checkout[billing_address][state]=NY
+&checkout[billing_address][zip]=10121
+&checkout[tax_number]=123456789
+&checkout[discount_code]=10PERCENTOFF
+```
+
+
+If you are using API to create checkouts pass a JSON object inside checkout_data.
+
+```http
+curl -X "POST" "https://api.lemonsqueezy.com/v1/checkouts" \
+     -H 'Accept: application/vnd.api+json' \
+     -H 'Content-Type: application/vnd.api+json' \
+     -H 'Authorization: Bearer {api_key}' \
+     -d '{
+  "data": {
+    "type": "checkouts",
+    "attributes": {
+      "checkout_data": {
+        "email": "johndoe@example.com",
+        "name": "John Doe"
+      }
+    },
+    "relationships": {
+      ...
+    }
+  }
+}'
+
+
+```

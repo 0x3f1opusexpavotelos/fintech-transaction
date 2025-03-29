@@ -1,10 +1,18 @@
 services:
   web:
-    build: .
-    ports:
-      - "3000:3000"
+    container_name: next-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+      # args:
+      #   NEXT_PUBLIC_ENV_VARIABLE: ${NEXT_PUBLIC_ENV_VARIABLE}
+    env_file:
+      - .env
     environment:
       - NODE_ENV=production
+    restart: always
+    ports:
+      - "3000:3000"
     networks:
       - my_network
   # db:
@@ -19,7 +27,12 @@ services:
   #     - postgres_data:/var/lib/postgresql/data
   #   networks:
   #     - my_network
+
+  # Add more containers below (nginx, postgres, etc.)
+
+# containers to communicate
+# resolve container_name as hostname
 networks:
   my_network:
     name: my_network
-    driver: bridge
+    external: true
