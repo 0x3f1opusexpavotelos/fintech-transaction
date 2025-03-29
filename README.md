@@ -668,3 +668,7 @@ curl -X "POST" "https://api.lemonsqueezy.com/v1/checkouts" \
 
 
 ```
+
+
+
+const FQDN = `${process.env.NEXT_PUBLIC_APP_URL}`
