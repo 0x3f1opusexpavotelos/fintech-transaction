@@ -36,7 +36,7 @@ const app = new Hono()
       return c.json({ error: "Unauthorized" }, 401)
     }
 
-    const connectedBank = await db
+    const [connectedBank] = await db
       .select()
       .from(connectedBanks)
       .where(eq(connectedBanks.userId, auth.userId))

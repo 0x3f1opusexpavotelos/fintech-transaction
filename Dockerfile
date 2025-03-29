@@ -1,8 +1,8 @@
 # FROM node:lts-alpine AS base
 FROM oven/bun:alpine AS base
 
-FROM base AS deps
 # 1.install deps beased on perfer packages
+FROM base AS deps
 WORKDIR /app
 COPY package.json bun.lock*  pnpm-lock.yaml* package-lock.json* yarn.lock* .npmrc* ./
 RUN  \

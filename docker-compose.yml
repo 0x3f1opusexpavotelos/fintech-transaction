@@ -5,7 +5,7 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
-        NEXT_PUBLIC_ENV_VARIABLE: fintech.lavitalite.tech
+        NEXT_PUBLIC_ENV_VARIABLE: ${NEXT_PUBLIC_ENV_VARIABLE:${NEXT_PUBLIC_ENV_VARIABLE}
     env_file:
       - .env
     environment:
@@ -15,22 +15,7 @@ services:
       - "3000:3000"
     networks:
       - my_network
-  # db:
-  #   image: postgres:latest
-  #   environment:
-  #     POSTGRES_USER: ${POSTGRES_USER}
-  #     POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-  #     POSTGRES_DB: ${POSTGRES_DB}
-  #   ports:
-  #     - "5432:5432"
-  #   volumes:
-  #     - postgres_data:/var/lib/postgresql/data
-  #   networks:
-  #     - my_network
 
-  # Add more containers below (nginx, postgres, etc.)
-
-# containers to communicate
 # resolve container_name as hostname
 networks:
   my_network:
