@@ -4,8 +4,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      # args:
-      #   NEXT_PUBLIC_ENV_VARIABLE: ${NEXT_PUBLIC_ENV_VARIABLE}
+      args:
+        NEXT_PUBLIC_ENV_VARIABLE: fintech.lavitalite.tech
     env_file:
       - .env
     environment:
